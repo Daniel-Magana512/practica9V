@@ -9,8 +9,8 @@ php_paquetes:
   - libapache2-mod-php 
   - php-mysql
 
-WP_HOME: https://practica9verdmp.ddns.net
-WP_SITEURL: https://practica9verdmp.ddns.net/wordpress
+WP_HOME: https://practicafas2dmp.ddns.net
+WP_SITEURL: https://practicafas2dmp.ddns.net/wordpress
 
 EMAIL: chema51226@gmail.com
-DOMAIN: practica9verdmp.ddns.net
+DOMAIN: https://practicafas2dmp.ddns.net
