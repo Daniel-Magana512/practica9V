@@ -1,5 +1,5 @@
 ---
-- name: Playbook para instalar la pila frontend
+- name: Playbook para instalar la pila wordpress
   hosts: front
   become: yes
 
