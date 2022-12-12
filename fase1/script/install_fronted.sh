@@ -13,8 +13,14 @@ apt-get install apache2 -y
 
 apt-get install php libapache2-mod-php php-mysql -y
 
-# copiamos el archivo de phpinfo de PHP
-cp ../php/info.php /var/www/html
+#Copiamos el archivo de configuración 000-default.conf
+cp ../conf/000-default.conf /etc/apache2/sites-available
 
-#BOrramos el archivo de index.html que está en el directorio /var/www/html
-rm -f /var/www/html/index.html
+#Copiamos el archivo de configuración dir.conf
+cp ../conf/dir.conf /etc/apache2/mods-available
+
+#Habilitamos el modulo rewrite
+a2enmod rewrite
+
+#Reiniciamos el servidor
+systemctl restart apache2
