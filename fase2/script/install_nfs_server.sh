@@ -1,6 +1,7 @@
 #!/bin/bash
 set - x
-apt update
+#Actualizamos los repositorios
+apt-update
 
 # Instalación nfs server
 apt install nfs-kernel-server -y
@@ -12,7 +13,7 @@ mkdir -p /var/www/html
 chown nobody:nogroup /var/www/html
 
 #Pasamos el archivo de conf a /etc/exports
-cp ./conf/exports /etc/exports
+cp ../conf/exports /etc/exports
 
 #Reiniciamos el servidor nfs
 systemclt restart nfs-kernel-server

@@ -1,4 +1,8 @@
 #!/bin/bash
+
+set -x
+
+#Actualizamos los repositorios
 apt-update
 
 #Añadimos las variables de conf
