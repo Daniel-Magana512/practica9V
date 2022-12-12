@@ -1,17 +1,31 @@
 #!/bin/bash
+
+# Para ir depurando la información
 set -x
+
 # Actualizamos los repositorios
 apt-get update
 
-#actualizamos los paquetes
+#Actualizamos los paquetes
 #apt-get upgrade -y
 
-#Instalamos el servidor apache
+#Instalamos el vervidor apache
 apt-get install apache2 -y
 
-# Instalamos los modulos php
+#Instalamos el sistema de gestos bd
+apt-get install mysql-server -y
 
+# Instalamos los módulos de PHP
 apt-get install php libapache2-mod-php php-mysql -y
 
-#BOrramos el archivo de index.html que está en el directorio /var/www/html
-rm -f /var/www/html/index.html
+#Copiamos el archivo de configuración 000-default.conf
+cp ./conf/000-default.conf /etc/sites-available/
+
+#Copiamos el archivo de configuración dir.conf
+cp ./conf/dir.conf /etc/mods-available/
+
+#Habilitamos el modulo rewrite
+a2enmod rewrite
+
+#Reiniciamos el servidor
+systemctl restart apache2
