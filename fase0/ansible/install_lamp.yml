@@ -42,7 +42,7 @@
 
   - name: Movemos los archivos de configuración a /etc/apache2/sites-availeble
     copy:
-      src: /tmp/archivos/fase0/conf/000-default.le
+      src: /tmp/archivos/fase0/conf/000-default.conf
       dest: /etc/apache2/sites-available/
       remote_src: yes
 

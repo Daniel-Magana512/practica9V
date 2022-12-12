@@ -17,15 +17,16 @@
   - name: ELiminamos las instalaciones previas de wordpress
     file:
       path: /var/html/wordpress
+      state: absent
 
   - name: Descargamos la herramienta wordpress
     ansible.builtin.get_url:
       url: https://es.wordpress.org/latest-es_ES.zip
-      dest: /tmp/archivos
+      dest: /tmp/
 
   - name: Descomprimir wordpress
     unarchive:
-      src: /tmp/archivos/latest-es_ES.zip
+      src: /tmp/wordpress-6.1.1-es_ES.zip
       dest: /var/www/html/
       remote_src: yes
 
@@ -39,31 +40,31 @@
     ansible.builtin.replace:
       path: /var/www/html/wordpress/wp-config.php
       regexp: database_name_here
-      replace: "{{$DB_NAME}}"
+      replace: "{{DB_NAME}}"
 
   - name: configuramos las variables en el archivo de configuración
     ansible.builtin.replace:
       path: /var/www/html/wordpress/wp-config.php
       regexp: username_here
-      replace: "{{$DB_USER}}"
+      replace: "{{DB_USER}}"
 
   - name: configuramos las variables en el archivo de configuración
     ansible.builtin.replace:
       path: /var/www/html/wordpress/wp-config.php
       regexp: password_here
-      replace: "{{$DB_PASS}}"
+      replace: "{{DB_PASS}}"
 
   - name: configuramos las variables en el archivo de configuración
     ansible.builtin.replace:
       path: /var/www/html/wordpress/wp-config.php
       regexp: localhost
-      replace: "{{$DB_HOST_PRIVATE_IP}}"
+      replace: "{{DB_HOST_PRIVATE_IP}}"
 
   - name: Añadimos la variable WP_HOME
-    shell: sed -i "/DB_COLLATE/a define('WP_HOME', '$WP_HOME');" /var/www/html/wordpress/wp-config.php
+    shell: sed -i "/DB_COLLATE/a define('WP_HOME', '{{WP_HOME}}');" /var/www/html/wordpress/wp-config.php
 
   - name: Añadimos la variable WP_SITEURL
-    shell: sed -i "/WP_HOME/a define('WP_SITEURL', '$WP_SITEURL');" /var/www/html/wordpress/wp-config.php
+    shell: sed -i "/WP_HOME/a define('WP_SITEURL', '{{WP_SITEURL}}');" /var/www/html/wordpress/wp-config.php
 
   - name: Copiamos el archivo index.php del directorio wordpress
     copy:
@@ -87,7 +88,7 @@
   - name: Instalamos el gestor de paquetes de Python3
     apt:
       name: python3-pip
-        state: present
+      state: present
 
   - name: Instalamos el modulo de pymysql
     pip:

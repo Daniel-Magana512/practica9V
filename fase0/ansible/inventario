@@ -1,5 +1,5 @@
 [front]
-52.202.237.39
+54.221.197.94
 [all:vars]
 ansible_user= ubuntu
 ansible_ssh_private_key_file=/home/ubuntu/clave_privada/vockey.pem
