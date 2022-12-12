@@ -8,3 +8,5 @@ WP_SITEURL=https://practica9verdad.ddns.net/wordpress
 
 EMAIL=chema51226@gmail.com
 DOMAIN=practica9verdad.ddns.net
+
+NFS_SERVER_IP_PRIVATE = 172.31.75.236

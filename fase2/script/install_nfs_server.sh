@@ -16,4 +16,4 @@ chown nobody:nogroup /var/www/html
 cp ../conf/exports /etc/exports
 
 #Reiniciamos el servidor nfs
-systemclt restart nfs-kernel-server
+systemctl restart nfs-kernel-server
