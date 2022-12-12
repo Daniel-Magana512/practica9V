@@ -4,9 +4,7 @@
 set -x
 
 source variables.sh
-#Añadimos las variables
-EMAIL=danielmp01189@gmail.com
-DOMAIN=ubuntu-practica04.ddns.net
+
 # Realizamos la instalación y actualización de snapd.
 snap install core; sudo snap refresh core
 
