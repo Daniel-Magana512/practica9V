@@ -6,7 +6,7 @@ set -x
 source variables.sh
 
 # Realizamos la instalación y actualización de snapd.
-snap install core; sudo snap refresh core
+snap install core && sudo snap refresh core
 
 #Eliminamos si existiese alguna instalación previa de certbot con apt.
 apt-get remove certbot

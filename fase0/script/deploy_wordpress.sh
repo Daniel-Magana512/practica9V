@@ -32,9 +32,6 @@ sed -i "s/localhost/$DB_HOST_PRIVATE_IP/" /var/www/html/wordpress/wp-config.php
 sed -i "/DB_COLLATE/a define('WP_HOME', '$WP_HOME');" /var/www/html/wordpress/wp-config.php
 sed -i "/WP_HOME/a define('WP_SITEURL', '$WP_SITEURL');" /var/www/html/wordpress/wp-config.php
 
-# ELiminamos el index.html
-
-rm -f /var/www/html/index.html
 
 # Copiamos el archivo index.php del directorio wordpress
 
