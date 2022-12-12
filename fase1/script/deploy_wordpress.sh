@@ -7,8 +7,6 @@ source variables.sh
 wget https://es.wordpress.org/latest-es_ES.zip -O /tmp/latest-es_ES.zip
 
 #Instalamos la utilidad unzip
-
-apt update
 apt install unzip -y
 
 # ELiminamos las instalaciones previas de wordpress
@@ -44,3 +42,6 @@ sed -i "s#wp-blog-header.php#wordpress/wp-blog-header.php#" /var/www/html/index.
 #MOdificamos el propietario y el grupo
 
 chown www-data:www-data /var/www/html -R
+
+#Reiniciamos el servidor
+systemctl restart apache2
