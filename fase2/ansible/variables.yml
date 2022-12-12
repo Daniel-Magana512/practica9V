@@ -1,0 +1,16 @@
+---
+DB_HOST_PRIVATE_IP: 172.31.73.169
+DB_NAME: db_name
+DB_USER: db_user
+DB_PASS: db_pass
+    
+php_paquetes:
+  - php
+  - libapache2-mod-php 
+  - php-mysql
+
+WP_HOME: https://pract9iawdmp.ddns.net
+WP_SITEURL: https://pract9iawdmp.ddns.net/wordpress
+
+EMAIL: chema51226@gmail.com
+DOMAIN: pract9iawdmp.ddns.net

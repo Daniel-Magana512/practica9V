@@ -1,0 +1,89 @@
+---
+- name: Playbook para instalar  wordpress
+  hosts: nfs
+  become: yes
+
+  tasks: 
+
+  - name: Añadimos las variables
+    ansible.builtin.include_vars:
+      ./variables.yml
+
+  - name: Instalar unzip
+    apt:
+      name: unzip
+      state: present
+
+  - name: Descargar WordPress 
+    ansible.builtin.get_url:
+      url: https://wordpress.org/latest.zip
+      dest: /tmp/wordpress.zip
+
+  - name: Descompresión de WordPress en /var/www/html
+    ansible.builtin.unarchive:
+      src: /tmp/wordpress.zip
+      dest: /var/www/html
+      remote_src: true
+
+  - name: COpiamos el archvio de configuración de ejemplo y creamos uno
+    copy:
+      src: /var/www/html/wordpress/wp-config-sample.php
+      dest: /var/www/html/wordpress/wp-config.php
+      remote_src: yes
+
+  - name: configuramos las variables en el archivo de configuración
+    ansible.builtin.replace:
+      path: /var/www/html/wordpress/wp-config.php
+      regexp: database_name_here
+      replace: "{{DB_NAME}}"
+
+  - name: configuramos las variables en el archivo de configuración
+    ansible.builtin.replace:
+      path: /var/www/html/wordpress/wp-config.php
+      regexp: username_here
+      replace: "{{DB_USER}}"
+
+  - name: configuramos las variables en el archivo de configuración
+    ansible.builtin.replace:
+      path: /var/www/html/wordpress/wp-config.php
+      regexp: password_here
+      replace: "{{DB_PASS}}"
+
+  - name: configuramos las variables en el archivo de configuración
+    ansible.builtin.replace:
+      path: /var/www/html/wordpress/wp-config.php
+      regexp: localhost
+      replace: "{{DB_HOST_PRIVATE_IP}}"
+
+
+  - name: Copiamos el archivo index.php del directorio wordpress
+    copy:
+      src: /var/www/html/wordpress/index.php
+      dest: /var/www/html/index.php
+      remote_src: yes
+
+  - name: Modificación del archivo wp-config.php
+    ansible.builtin.blockinfile:
+      path: /var/www/html/wordpress/wp-config.php
+      insertafter: DB_COLLATE
+      block: |
+        define('WP_HOME', '{{ WP_HOME }}');
+        define('WP_SITEURL', '{{ WP_SITEURL }}');
+
+  - name: Modificación del archivo index.php para la redirección a WordPress
+    ansible.builtin.replace:
+      path: /var/www/html/index.php
+      regexp: wp-blog-header.php
+      replace: wordpress/wp-blog-header.php
+
+  - name: Cambiamos  de propietario y grupo de forma recursiva al directorio /var/www/html
+    ansible.builtin.file:
+      path: /var/www/html
+      owner: www-data
+      group: www-data
+      recurse: true
+
+  - name: Reiniciamos el servidor apache
+    service:
+      name: apache2
+      state: restarted 

@@ -1,0 +1,25 @@
+---
+- name: Playbook para instalar la pila backend
+  hosts: bak
+  become: yes
+
+  tasks:
+  - name: Actualizar los repositorios
+    apt:
+      update_cache: yes
+
+  - name: Instalar el sistema gestor de base de datos de mysql
+    apt:
+      name: mysql-server
+      state: present
+      
+  - name: Cambiamos las variables de mysql para que me accepte conexiones desde cualquier interfaz
+    ansible.builtin.replace:
+      path: /etc/mysql/mysql.conf.d/mysqld.cnf
+      regexp: 127.0.0.1
+      replace: 0.0.0.0
+
+  - name: Reiniciamos el servidor mysql
+    service:
+      name: mysql
+      state: restarted 
