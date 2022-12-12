@@ -19,10 +19,10 @@ apt-get install mysql-server -y
 apt-get install php libapache2-mod-php php-mysql -y
 
 #Copiamos el archivo de configuración 000-default.conf
-cp ./conf/000-default.conf /etc/sites-available/
+cp ./conf/000-default.conf /etc/apache2/sites-available/
 
 #Copiamos el archivo de configuración dir.conf
-cp ./conf/dir.conf /etc/mods-available/
+cp ./conf/dir.conf /etc/apache2/mods-available/
 
 #Habilitamos el modulo rewrite
 a2enmod rewrite
