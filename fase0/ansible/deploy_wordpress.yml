@@ -1,0 +1,121 @@
+---
+- name: Playbook para instalar la pila frontend
+  hosts: front
+  become: yes
+
+  tasks:
+
+  - name: Añadimos las variables
+    ansible.builtin.include_vars:
+      ./variables.yml
+
+  - name: Instalar unzip
+    apt:
+      name: unzip
+      state: present
+
+  - name: ELiminamos las instalaciones previas de wordpress
+    file:
+      path: /var/html/wordpress
+
+  - name: Descargamos la herramienta wordpress
+    ansible.builtin.get_url:
+      url: https://es.wordpress.org/latest-es_ES.zip
+      dest: /tmp/archivos
+
+  - name: Descomprimir wordpress
+    unarchive:
+      src: /tmp/archivos/latest-es_ES.zip
+      dest: /var/www/html/
+      remote_src: yes
+
+  - name: COpiamos el archvio de configuración de ejemplo y creamos uno
+    copy:
+      src: /var/www/html/wordpress/wp-config-sample.php
+      dest: /var/www/html/wordpress/wp-config.php
+      remote_src: yes
+
+  - name: configuramos las variables en el archivo de configuración
+    ansible.builtin.replace:
+      path: /var/www/html/wordpress/wp-config.php
+      regexp: database_name_here
+      replace: "{{$DB_NAME}}"
+
+  - name: configuramos las variables en el archivo de configuración
+    ansible.builtin.replace:
+      path: /var/www/html/wordpress/wp-config.php
+      regexp: username_here
+      replace: "{{$DB_USER}}"
+
+  - name: configuramos las variables en el archivo de configuración
+    ansible.builtin.replace:
+      path: /var/www/html/wordpress/wp-config.php
+      regexp: password_here
+      replace: "{{$DB_PASS}}"
+
+  - name: configuramos las variables en el archivo de configuración
+    ansible.builtin.replace:
+      path: /var/www/html/wordpress/wp-config.php
+      regexp: localhost
+      replace: "{{$DB_HOST_PRIVATE_IP}}"
+
+  - name: Añadimos la variable WP_HOME
+    shell: sed -i "/DB_COLLATE/a define('WP_HOME', '$WP_HOME');" /var/www/html/wordpress/wp-config.php
+
+  - name: Añadimos la variable WP_SITEURL
+    shell: sed -i "/WP_HOME/a define('WP_SITEURL', '$WP_SITEURL');" /var/www/html/wordpress/wp-config.php
+
+  - name: Copiamos el archivo index.php del directorio wordpress
+    copy:
+      src: /var/www/html/wordpress/index.php
+      dest: /var/www/html/index.php
+      remote_src: yes
+
+  - name: Configuramos el archivo index.php
+    ansible.builtin.replace:
+      path: /var/www/html/index.php
+      regexp: wp-blog-header.php
+      replace: wordpress/wp-blog-header.php
+
+  - name: Cambiamos  de propietario y grupo de forma recursiva al directorio /var/www/html
+    ansible.builtin.file:
+      path: /var/www/html
+      owner: www-data
+      group: www-data
+      recurse: true
+
+  - name: Instalamos el gestor de paquetes de Python3
+    apt:
+      name: python3-pip
+        state: present
+
+  - name: Instalamos el modulo de pymysql
+    pip:
+      name: pymysql
+      state: present
+
+  - name: Crear una base de datos
+    mysql_db:
+      name: "{{ DB_NAME }}"
+      state: present
+      login_unix_socket: /var/run/mysqld/mysqld.sock
+
+  - name: Creamos un usuario para la Base de datos
+    no_log: true
+    mysql_user:
+      name: "{{ DB_USER }}"
+      host: '%'
+      password: "{{ DB_PASS }}"
+      priv: "{{ DB_NAME }}.*:ALL,GRANT"
+      state: present
+      login_unix_socket: /var/run/mysqld/mysqld.sock
+
+  - name: Reiniciamos el servidor mysql
+    service:
+      name: mysql
+      state: restarted 
+
+  - name: Reiniciamos el servidor apache
+    service:
+      name: apache2
+      state: restarted 

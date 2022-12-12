@@ -1,0 +1,28 @@
+---
+- name: Playbook para instalar cerbot
+  hosts: balanceador
+  become: yes
+
+  tasks:
+
+#  ansible-galaxy collection install community.general
+
+  - name: Añadimos las variables
+    ansible.builtin.include_vars:
+      ./variables.yml
+
+  - name: Instalación de cerbot mediante snap
+    community.general.snap:
+      name: certbot
+      classic: true
+      state: present
+
+  - name: Descarga el certificado 
+    ansible.builtin.command: certbot --apache -m {{PS_EMAIL}}  --agree-tos --no-eff-email -d {{DOMAIN}}
+    register: my_output
+    changed_when: my_output.rc !=0
+
+  - name: Reinicamos apache2
+    service: 
+      name: apache2
+      state: restarted
