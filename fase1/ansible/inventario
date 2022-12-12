@@ -1,0 +1,11 @@
+[front]
+3.238.18.232
+[bak]
+54.144.175.223
+
+
+
+[all:vars]
+ansible_user= ubuntu
+ansible_ssh_private_key_file=/home/ubuntu/clave_privada/vockey.pem
+ansible_ssh_common_args='-o StrictHostKeyChecking=accept-new'

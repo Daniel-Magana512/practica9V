@@ -1,0 +1,7 @@
+---
+  - import_playbook: install_backend.yml
+  - import_playbook: install_frontend.yml
+  - import_playbook: deploy_fronted.yml
+  - import_playbook: deploy_backend.yml
+
+  

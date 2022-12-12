@@ -1,0 +1,77 @@
+---
+- name: Playbook para instalar la pila front
+  hosts: front
+  become: yes
+
+  tasks:
+
+  - name: Añadimos las variables
+    ansible.builtin.include_vars:
+      ./variables.yml
+
+  - name: Eliminamos el directorio de instalaciones previas
+    file:
+      path: /tmp/iaw-practica-lamp
+      state: absent
+
+  - name: Clonamos el repositorio
+    git:
+      repo: https://github.com/josejuansanchez/iaw-practica-lamp.git
+      dest: /tmp/archivos
+
+  - name: Movemos el código fuente de la aplicación
+    copy:
+      src: /tmp/archivos/src/
+      dest: /var/www/html/
+      remote_src: yes
+
+  - name: Eliminamos el directorio de instalaciones previas
+    file:
+      path: /tmp/archivos/
+      state: absent
+
+  - name: Configuramos las variables de conexión gbd
+    ansible.builtin.replace:
+      path: /var/www/html/config.php
+      regexp: localhost
+      replace: "{{DB_HOST_PRIVATE_IP}}"
+
+  - name: Configuramos las variables de conexión gbd
+    ansible.builtin.replace:
+      path: /var/www/html/config.php
+      regexp: lamp_db
+      replace: "{{DB_NAME}}"
+
+  - name: Configuramos las variables de conexión gbd
+    ansible.builtin.replace:
+      path: /var/www/html/config.php
+      regexp: lamp_user
+      replace: "{{DB_USER}}"
+
+  - name: Configuramos las variables de conexión gbd
+    ansible.builtin.replace:
+      path: /var/www/html/config.php
+      regexp: lamp_password
+      replace: "{{DB_PASS}}"
+
+  - name: Cambiamos  de propietario y grupo de forma recursiva al directorio /var/www/html
+    ansible.builtin.file:
+      path: /var/www/html
+      owner: www-data
+      group: www-data
+      recurse: true
+
+  - name: Borramos el index.html en /var/www/html
+    ansible.builtin.file:
+      path: /var/www/html/index.html
+      state: absent
+
+  - name: Reiniciamos el servidor apache
+    service:
+      name: apache2
+      state: restarted 
+
+
+
+
+

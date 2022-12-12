@@ -1,0 +1,29 @@
+---
+- name: Playbook para instalar la pila frontend
+  hosts: front
+  become: yes
+
+  tasks:
+
+  - name: Añadimos las variables
+    ansible.builtin.include_vars:
+      ./variables.yml
+
+  - name: Actualizar los repositorios
+    apt:
+      update_cache: yes
+
+  - name: Instalar el servidor web Apache
+    apt:
+      name: apache2
+      state: present
+
+  - name: Instalar PHP 
+    apt:
+      name: "{{php_paquetes}}"
+      state: present
+
+  - name: Reiniciamos el servidor apache
+    service:
+      name: apache2
+      state: restarted 

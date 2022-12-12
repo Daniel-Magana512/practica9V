@@ -1,0 +1,67 @@
+---
+- name: Playbook para instalar la pila backend
+  hosts: bak
+  become: yes
+
+  tasks:
+
+    - name: Añadimos las variables
+      ansible.builtin.include_vars:
+        ./variables.yml
+
+    - name: Borramos el archivo en caso de que exista
+      ansible.builtin.file:
+        path: /tmp/repo
+        state: absent
+
+    - name: Descarga Unzip
+      apt:
+        name: unzip
+        state: present
+
+    - name: Instalamos el gestor de paquetes de Python3
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Instalamos el modulo de pymysql
+      pip:
+        name: pymysql
+        state: present
+
+    - name: Crear una base de datos
+      mysql_db:
+        name: "{{ DB_NAME }}"
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Creamos un usuario para la Base de datos
+      no_log: true
+      mysql_user:
+        name: "{{ DB_USER }}"
+        host: '%'
+        password: "{{ DB_PASS }}"
+        priv: "{{ DB_NAME }}.*:ALL,GRANT"
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+  
+    - name: Clonación de repositorio en /tmp/repo
+      git:
+        clone: true
+        dest: /tmp/repo
+        repo: https://github.com/josejuansanchez/iaw-practica-lamp.git
+
+    - name: Modificación del contenido de la base de datos
+      ansible.builtin.replace:
+        path: /tmp/repo/db/database.sql
+        regexp: lamp_db
+        replace: "{{ DB_NAME }}"
+
+    - name: Añadimos la base de datos
+      ansible.builtin.shell:
+        mysql -u root < /tmp/repo/db/database.sql
+
+    - name: Reiniciamos el servidor mysql
+      service:
+        name: mysql
+        state: restarted 
