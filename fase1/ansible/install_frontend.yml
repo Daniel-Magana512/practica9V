@@ -27,7 +27,6 @@
     file:
       path: /etc/apache2/sites-available/000-default.conf
 
-
   - name: Clonamos el repositorio
     git:
       repo: https://github.com/Daniel-Magana512/practica9V.git
