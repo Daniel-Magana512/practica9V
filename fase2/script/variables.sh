@@ -11,5 +11,3 @@ DOMAIN=practica9verdad.ddns.net
 
 # Aquí ponemos la ip privada del servidor nfs
 NFS_SERVER_IP_PRIVATE = 172.31.75.236
-
-S_SERVER = 

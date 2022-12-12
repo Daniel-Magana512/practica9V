@@ -30,6 +30,9 @@ sed -i "s/localhost/$DB_HOST_PRIVATE_IP/" /var/www/html/wordpress/wp-config.php
 sed -i "/DB_COLLATE/a define('WP_HOME', '$WP_HOME');" /var/www/html/wordpress/wp-config.php
 sed -i "/WP_HOME/a define('WP_SITEURL', '$WP_SITEURL');" /var/www/html/wordpress/wp-config.php
 
+#Habilitamos https para el balanceador (Esta directiva la he puesto solamente para la fase2)
+
+sed -i "/WP_SITEURL/a $_SERVER['HTTPS']='on';" /var/www/html/wordpress/wp-config.php
 
 # Copiamos el archivo index.php del directorio wordpress
 
@@ -42,6 +45,7 @@ sed -i "s#wp-blog-header.php#wordpress/wp-blog-header.php#" /var/www/html/index.
 #MOdificamos el propietario y el grupo
 
 chown www-data:www-data /var/www/html -R
+
 
 #Reiniciamos el servidor
 systemctl restart apache2
