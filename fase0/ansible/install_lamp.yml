@@ -1,0 +1,70 @@
+---
+- name: Playbook para instalar la pila frontend
+  hosts: front
+  become: yes
+
+  tasks:
+
+  - name: Añadimos las variables
+    ansible.builtin.include_vars:
+      ./variables.yml
+
+  - name: Actualizar los repositorios
+    apt:
+      update_cache: yes
+
+  - name: Instalar el servidor web Apache
+    apt:
+      name: apache2
+      state: present
+
+  - name: Instalar el servidor mysql
+    apt:
+      name: mysql-server
+      state: present
+
+  - name: Instalar PHP 
+    apt:
+      name: "{{php_paquetes}}"
+      state: present
+
+#-------------------------------------------------------------------
+
+  - name: Eliminamos los archivos clonados innecesarios.
+    file:
+      path: /etc/apache2/sites-available/000-default.conf
+
+
+  - name: Clonamos el repositorio
+    git:
+      repo: https://github.com/Daniel-Magana512/practica9V.git
+      dest: /tmp/archivos
+
+  - name: Movemos los archivos de configuración a /etc/apache2/sites-availeble
+    copy:
+      src: /tmp/archivos/fase0/conf/000-default.le
+      dest: /etc/apache2/sites-available/
+      remote_src: yes
+
+  - name: Movemos el dir.conf
+    copy:
+      src: /tmp/archivos/fase0/conf/dir.conf
+      dest: /etc/apache2/mods-available
+      remote_src: yes
+
+
+  - name: Eliminamos los archivos clonados innecesarios.
+    file:
+      path: /tmp/archivos
+
+#--------------------------------------------------------------
+
+  - name: Instalamos el módulo rewrite
+    apache2_module:
+        name: rewrite
+        state: present
+
+  - name: Reiniciamos el servidor apache
+    service:
+      name: apache2
+      state: restarted 
