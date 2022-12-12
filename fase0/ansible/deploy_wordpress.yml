@@ -14,21 +14,16 @@
       name: unzip
       state: present
 
-  - name: ELiminamos las instalaciones previas de wordpress
-    file:
-      path: /var/html/wordpress
-      state: absent
-
-  - name: Descargamos la herramienta wordpress
+  - name: Descargar WordPress 
     ansible.builtin.get_url:
-      url: https://es.wordpress.org/latest-es_ES.zip
-      dest: /tmp/
+      url: https://wordpress.org/latest.zip
+      dest: /tmp/wordpress.zip
 
-  - name: Descomprimir wordpress
-    unarchive:
-      src: /tmp/wordpress-6.1.1-es_ES.zip
-      dest: /var/www/html/
-      remote_src: yes
+  - name: Descompresión de WordPress en /var/www/html
+    ansible.builtin.unarchive:
+      src: /tmp/wordpress.zip
+      dest: /var/www/html
+      remote_src: true
 
   - name: COpiamos el archvio de configuración de ejemplo y creamos uno
     copy:
@@ -60,11 +55,6 @@
       regexp: localhost
       replace: "{{DB_HOST_PRIVATE_IP}}"
 
-  - name: Añadimos la variable WP_HOME
-    shell: sed -i "/DB_COLLATE/a define('WP_HOME', '{{WP_HOME}}');" /var/www/html/wordpress/wp-config.php
-
-  - name: Añadimos la variable WP_SITEURL
-    shell: sed -i "/WP_HOME/a define('WP_SITEURL', '{{WP_SITEURL}}');" /var/www/html/wordpress/wp-config.php
 
   - name: Copiamos el archivo index.php del directorio wordpress
     copy:
@@ -72,7 +62,15 @@
       dest: /var/www/html/index.php
       remote_src: yes
 
-  - name: Configuramos el archivo index.php
+  - name: Modificación del archivo wp-config.php
+    ansible.builtin.blockinfile:
+      path: /var/www/html/wordpress/wp-config.php
+      insertafter: DB_COLLATE
+      block: |
+        define('WP_HOME', '{{ WP_HOME }}');
+        define('WP_SITEURL', '{{ WP_SITEURL }}');
+
+  - name: Modificación del archivo index.php para la redirección a WordPress
     ansible.builtin.replace:
       path: /var/www/html/index.php
       regexp: wp-blog-header.php
