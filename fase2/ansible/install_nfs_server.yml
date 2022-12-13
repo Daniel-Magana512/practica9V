@@ -13,8 +13,16 @@
     apt:
       name: nfs-kernel-server
 
-  - name: Creates directory
-    shell: mkdir -p /var/www/html 
+ # - name: Creates directory
+#    shell: mkdir -p /var/www/html 
+
+  - name: Modificacion del usuario propietario del directorio /vars/www/html/
+    file: 
+      path: /var/www/html/
+      state: directory
+      owner: nobody
+      group: nogroup
+      recurse: yes
 
   - name: Clonamos el repositorio
     git:
