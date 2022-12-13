@@ -359,7 +359,7 @@ Para esta fase necesitaremos dos máquina , una para el front-end y otra para el
 
 * **La máquina de back-end tendrá la base de datos.**
 
-El archivo de las variables no cambia, tampoco cambia la forma de obtener el certificado ni el archivo install_frontend.yml, además tiene los mismos archivos de configuración, por lo tanto no lo volveré a explicar.
+El archivo de las variables no cambia, tampoco cambia la forma de obtener el certificado ni el archivo install_frontend.yml, además tiene los mismos archivos de configuración (000-default.conf y el dir.conf van a la máquina front-end es lo único nuevo), por lo tanto no lo volveré a explicar.
 
 El archivo de wordpress es el mismo que la fase0, a excepción de mysql configuración de base de datos , usuario y contraseña, esto se debe a que la esta funcionalidad ya no está concentrada en una sola sino que concretamente esa labor se encargará el back-end.
 
@@ -447,4 +447,19 @@ Reiciniamos mysql.
 ```
 
 Hacemos un llamamiento a las variables para crear la base de datos, usuario y contraseña, aunque previamente instalamos el gestor de paquetes python3-pip para instalar pymysql, esta herramienta nos permitirá interactuar con la base de datos.
+
+## **FASE 2**
+
+**Recordar**
+
+La primera capa, pondremos un balanceador que nos permitirá comunicar con lás máquinas que hay en las capas inferiores)   
+
+La segunda capa, tiene 3 niveles font-end (dos que servirán como servidor apache, y un servidor nfs que contestará a las peticiones que les realice apache, es decir, está maquina tendrá wordpress, entonces cada vez que alguien se quiera conectar al wordpress el servidor de apache preguntará al servidor nfs para que esa respuesta llegue finalmente al balanceador).
+
+La tercera capa es el back-end , la máquina que está en este nivel nos dará la base de datos y con un usuario para wordpress.
+
+
+### **ARCHIVOS DE CONFIGURACIÓN**
+
+Además de los archivos mencionados anteriormente
 
