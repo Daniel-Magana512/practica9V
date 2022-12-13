@@ -9,6 +9,38 @@
     ansible.builtin.include_vars:
       ./variables.yml
 
+  - name: Instalamos el gestor de paquetes de Python3
+    apt:
+      name: python3-pip
+      state: present
+
+  - name: Instalamos el modulo de pymysql
+    pip:
+      name: pymysql
+      state: present
+
+  - name: Crear una base de datos
+    mysql_db:
+      name: "{{ DB_NAME }}"
+      state: present
+      login_unix_socket: /var/run/mysqld/mysqld.sock
+
+  - name: Creamos un usuario para la Base de datos
+    no_log: true
+    mysql_user:
+      name: "{{ DB_USER }}"
+      host: '%'
+      password: "{{ DB_PASS }}"
+      priv: "{{ DB_NAME }}.*:ALL,GRANT"
+      state: present
+      login_unix_socket: /var/run/mysqld/mysqld.sock
+
+  - name: Reiniciamos el servidor mysql
+    service:
+      name: mysql
+      state: restarted 
+
+
   - name: Instalar unzip
     apt:
       name: unzip
@@ -82,37 +114,6 @@
       owner: www-data
       group: www-data
       recurse: true
-
-  - name: Instalamos el gestor de paquetes de Python3
-    apt:
-      name: python3-pip
-      state: present
-
-  - name: Instalamos el modulo de pymysql
-    pip:
-      name: pymysql
-      state: present
-
-  - name: Crear una base de datos
-    mysql_db:
-      name: "{{ DB_NAME }}"
-      state: present
-      login_unix_socket: /var/run/mysqld/mysqld.sock
-
-  - name: Creamos un usuario para la Base de datos
-    no_log: true
-    mysql_user:
-      name: "{{ DB_USER }}"
-      host: '%'
-      password: "{{ DB_PASS }}"
-      priv: "{{ DB_NAME }}.*:ALL,GRANT"
-      state: present
-      login_unix_socket: /var/run/mysqld/mysqld.sock
-
-  - name: Reiniciamos el servidor mysql
-    service:
-      name: mysql
-      state: restarted 
 
   - name: Reiniciamos el servidor apache
     service:

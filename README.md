@@ -134,6 +134,217 @@ La última variable es php_paquetes tiene una lista de contenido para que nos de
     service:
       name: apache2
       state: restarted 
-´´´
+```
 
 
+Añadimos el archivo de las variables.
+
+Instalamos mysql-server, php, y apache.
+
+Clonamos este mismo repositorio, para añadir el dir.conf y el 000-default.conf.
+
+Instalamos el módulo de apache rewrite para wordpress.
+
+Reiniciamos apache.
+
+**Obtenemos el certificado**
+
+```yml
+---
+- name: Playbook para instalar cerbot
+  hosts: front
+  become: yes
+
+  tasks:
+  
+
+  - name: Añadimos las variables
+    ansible.builtin.include_vars:
+      ./variables.yml
+
+  - name: Instalación de cerbot mediante snap
+    community.general.snap:
+      name: certbot
+      classic: true
+      state: present
+
+  - name: Descarga el certificado 
+    ansible.builtin.command: certbot --apache -m {{EMAIL}}  --agree-tos --no-eff-email -d {{DOMAIN}}
+    register: my_output
+    changed_when: my_output.rc !=0
+
+  - name: Reinicamos apache2
+    service: 
+      name: apache2
+      state: restarted
+```
+
+**Creamos la base de datos e instalamos Wordpress**
+
+
+```yml
+---
+- name: Playbook para instalar la pila wordpress
+  hosts: front
+  become: yes
+
+  tasks:
+
+  - name: Añadimos las variables
+    ansible.builtin.include_vars:
+      ./variables.yml
+
+  - name: Instalamos el gestor de paquetes de Python3
+    apt:
+      name: python3-pip
+      state: present
+
+  - name: Instalamos el modulo de pymysql
+    pip:
+      name: pymysql
+      state: present
+
+  - name: Crear una base de datos
+    mysql_db:
+      name: "{{ DB_NAME }}"
+      state: present
+      login_unix_socket: /var/run/mysqld/mysqld.sock
+
+  - name: Creamos un usuario para la Base de datos
+    no_log: true
+    mysql_user:
+      name: "{{ DB_USER }}"
+      host: '%'
+      password: "{{ DB_PASS }}"
+      priv: "{{ DB_NAME }}.*:ALL,GRANT"
+      state: present
+      login_unix_socket: /var/run/mysqld/mysqld.sock
+
+  - name: Reiniciamos el servidor mysql
+    service:
+      name: mysql
+      state: restarted 
+
+
+  - name: Instalar unzip
+    apt:
+      name: unzip
+      state: present
+
+  - name: Descargar WordPress 
+    ansible.builtin.get_url:
+      url: https://wordpress.org/latest.zip
+      dest: /tmp/wordpress.zip
+
+  - name: Descompresión de WordPress en /var/www/html
+    ansible.builtin.unarchive:
+      src: /tmp/wordpress.zip
+      dest: /var/www/html
+      remote_src: true
+
+  - name: COpiamos el archvio de configuración de ejemplo y creamos uno
+    copy:
+      src: /var/www/html/wordpress/wp-config-sample.php
+      dest: /var/www/html/wordpress/wp-config.php
+      remote_src: yes
+
+  - name: configuramos las variables en el archivo de configuración
+    ansible.builtin.replace:
+      path: /var/www/html/wordpress/wp-config.php
+      regexp: database_name_here
+      replace: "{{DB_NAME}}"
+
+  - name: configuramos las variables en el archivo de configuración
+    ansible.builtin.replace:
+      path: /var/www/html/wordpress/wp-config.php
+      regexp: username_here
+      replace: "{{DB_USER}}"
+
+  - name: configuramos las variables en el archivo de configuración
+    ansible.builtin.replace:
+      path: /var/www/html/wordpress/wp-config.php
+      regexp: password_here
+      replace: "{{DB_PASS}}"
+
+  - name: configuramos las variables en el archivo de configuración
+    ansible.builtin.replace:
+      path: /var/www/html/wordpress/wp-config.php
+      regexp: localhost
+      replace: "{{DB_HOST_PRIVATE_IP}}"
+
+
+  - name: Copiamos el archivo index.php del directorio wordpress
+    copy:
+      src: /var/www/html/wordpress/index.php
+      dest: /var/www/html/index.php
+      remote_src: yes
+
+  - name: Modificación del archivo wp-config.php
+    ansible.builtin.blockinfile:
+      path: /var/www/html/wordpress/wp-config.php
+      insertafter: DB_COLLATE
+      block: |
+        define('WP_HOME', '{{ WP_HOME }}');
+        define('WP_SITEURL', '{{ WP_SITEURL }}');
+
+  - name: Modificación del archivo index.php para la redirección a WordPress
+    ansible.builtin.replace:
+      path: /var/www/html/index.php
+      regexp: wp-blog-header.php
+      replace: wordpress/wp-blog-header.php
+
+  - name: Cambiamos  de propietario y grupo de forma recursiva al directorio /var/www/html
+    ansible.builtin.file:
+      path: /var/www/html
+      owner: www-data
+      group: www-data
+      recurse: true
+
+  - name: Reiniciamos el servidor apache
+    service:
+      name: apache2
+      state: restarted 
+
+```
+
+Creamos una base de datos, un usuario y contraseña.
+
+Descargamos wordpress, lo descomprimimos y lo llevamos a /var/www/html.
+
+Las variables de wordpress las asignaremos al archivo wp-config.php (este archivo previamente estaba dentro de la carpeta wordpress y se llamaba wp-config-sample.php, ahora lo hemos ubicado en /var/www/html)
+
+Además de meter variables como la ip de donde se ubica la base de datos (en este caso en vez de poner la ip puse localhost, se ubica en la misma máquina), insertamos las url que he mencionado antes.
+
+Modificamos el archivo index.php la linea wp-blog-header.php por wordpress/wp-blog-header.php, esto nos permitirá la reedireción.
+
+Cambiamos los permisos y reiniciamos apache.
+
+**Archivo de configuración**
+
+**000-default.conf**
+
+Al añadir la siguiente directiva al 000-default.conf , nos permiste sobrescribir las reglas de apache.
+
+```conf
+<VirtualHost *:80>
+        #ServerName www.example.com
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html
+
+      <Directory "/var/www/html">
+         AllowOverride All
+      </Directory>  
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
+**dir.conf**
+
+Modificamos el index.html y ponemos como prioridad index.php, para que la máquina coja priorida.
+
+```conf
+<IfModule mod_dir.c>
+	DirectoryIndex index.php index.cgi index.pl index.html index.xhtml index.htm
+</IfModule>
+```
