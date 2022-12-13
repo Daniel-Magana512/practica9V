@@ -1,6 +1,6 @@
 ---
 #Aquí ponemos la ip privada de back-end para hacerlo referenciar en el frontend
-DB_HOST_PRIVATE_IP: 172.31.65.223
+DB_HOST_PRIVATE_IP: 172.31.64.49
 DB_NAME: db_name
 DB_USER: db_user
 DB_PASS: db_pass
@@ -20,13 +20,11 @@ WP_SITEURL: https://pra913iawacabar.ddns.net/wordpress
 EMAIL: noeliacordoba20@gmail.com
 DOMAIN: pra913iawacabar.ddns.net
 
-
-NFS_SERVER_IP_PRIVATE: 172.31.64.127
+#Ip privada de nfs
+NFS_SERVER_IP_PRIVATE: 172.31.64.56
 
 # Aquí ponemos las Ip de los frontend
-IP_HTTP_SERVER_1: 3.235.223.56
+IP_HTTP_SERVER_1: 52.5.94.83
 
-IP_HTTP_SERVER_2: 44.197.235.29
+IP_HTTP_SERVER_2: 34.206.223.231
 
-#Para añadir la directiva de https
-_SERVER: pra913iawacabar.ddns.net

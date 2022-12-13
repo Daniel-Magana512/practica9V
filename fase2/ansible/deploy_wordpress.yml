@@ -69,7 +69,6 @@
       block: |
         define('WP_HOME', '{{ WP_HOME }}');
         define('WP_SITEURL', '{{ WP_SITEURL }}');
-        "{{_SERVER}}"['HTTPS']='on';
 
   - name: Modificación del archivo index.php
     ansible.builtin.replace:
@@ -77,14 +76,9 @@
       regexp: wp-blog-header.php
       replace: wordpress/wp-blog-header.php
 
-  - name: Cambiamos  de propietario y grupo de forma recursiva al directorio /var/www/html
+  - name: Cambiamos de propietario y grupo para /var/www/html para quue sea de apache
     ansible.builtin.file:
       path: /var/www/html
       owner: www-data
       group: www-data
       recurse: true
-
-  - name: Reiniciamos el servidor apache
-    service:
-      name: apache2
-      state: restarted 

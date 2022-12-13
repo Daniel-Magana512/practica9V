@@ -13,16 +13,13 @@
     apt:
       name: nfs-kernel-server
 
-  - name: Creates el directorio
-    shell: mkdir -p /var/www/html 
-
-  - name: Modificacion del usuario propietario del directorio /vars/www/html/
-    file: 
-      path: /var/www/html/
+  - name: Creamos el directorio
+    ansible.builtin.file:
+      path: /var/www/html
       state: directory
+      mode: 0755
       owner: nobody
       group: nogroup
-      recurse: yes
 
   - name: Clonamos el repositorio
     git:
@@ -39,12 +36,7 @@
     file:
       path: /tmp/archivos
 
-
   - name: Reiniciamos el servidor servidor nfs
     service:
       name: nfs-kernel-server
       state: restarted 
-
-
-
-
