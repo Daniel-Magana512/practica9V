@@ -1,6 +1,6 @@
 ---
-- name: Playbook para instalar la pila frontend
-  hosts: front
+- name: Playbook para instalar la pila nfs
+  hosts: nfs
   become: yes
 
   tasks:
@@ -20,3 +20,28 @@
       owner: nogroup
       group: nogroup
       recurse: yes
+
+  - name: Clonamos el repositorio
+    git:
+      repo: https://github.com/Daniel-Magana512/practica9V.git
+      dest: /tmp/archivos
+
+  - name: Pasamos el archivo de conf a /etc/exports
+    copy:
+      src: /tmp/archivos/fase2/conf/exports
+      dest: /etc/exports
+      remote_src: yes
+      
+  - name: Eliminamos los archivos clonados innecesarios.
+    file:
+      path: /tmp/archivos
+
+
+  - name: Reiniciamos el servidor servidor nfs
+    service:
+      name: nfs-kernel-server
+      state: restarted 
+
+
+
+
