@@ -11,11 +11,11 @@
 
   - name: Instalación nfs server
     apt:
-      install nfs-kernel-server
+      name: nfs-kernel-server
 
-  - name: Creamos el directorio /var/www/html/
-    file: 
-      path: /var/www/html/
+  - name: Creates directory
+    file:
+      path: /var/www/html
       state: directory
       owner: nogroup
       group: nogroup
