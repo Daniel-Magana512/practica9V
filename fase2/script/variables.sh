@@ -22,5 +22,5 @@ http://IP_HTTP_SERVER_1 = 3.235.223.56
 
 http://IP_HTTP_SERVER_2 = 44.197.235.29
 
-
+#Para añadir la directiva de https
 _SERVER= pra9asiriawdmp.ddns.net
