@@ -319,7 +319,7 @@ Modificamos el archivo index.php la linea wp-blog-header.php por wordpress/wp-bl
 
 Cambiamos los permisos y reiniciamos apache.
 
-**Archivo de configuración**
+### **Archivos de configuración**
 
 **000-default.conf**
 
@@ -348,3 +348,11 @@ Modificamos el index.html y ponemos como prioridad index.php, para que la máqui
 	DirectoryIndex index.php index.cgi index.pl index.html index.xhtml index.htm
 </IfModule>
 ```
+
+## **FASE 1**
+
+Para esta fase necesitaremos dos máquina , una para el front-end y otra para el back-end.
+
+* **La máquina de front-end tendra: Servidor apache y wordpress.**
+
+* **La máquina de back-end tendrá la base de datos.**
