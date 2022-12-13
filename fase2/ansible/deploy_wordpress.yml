@@ -19,7 +19,7 @@
       url: https://wordpress.org/latest.zip
       dest: /tmp/wordpress.zip
 
-  - name: Descompresión de WordPress en /var/www/html
+  - name: Descomprimir WordPress en /var/www/html
     ansible.builtin.unarchive:
       src: /tmp/wordpress.zip
       dest: /var/www/html

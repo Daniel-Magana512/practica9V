@@ -2,5 +2,12 @@
   - import_playbook: install_frontend.yml
   - import_playbook: install_backend.yml
   - import_playbook: deploy_backend.yml
+  - import_playbook: install_load_balancer.yml
   - import_playbook: install_cerbot.yml
+  - import_playbook: install_nfs_server.yml
+  - import_playbook: install_nfs_client.yml
   - import_playbook: deploy_wordpress.yml
+
+
+
+
