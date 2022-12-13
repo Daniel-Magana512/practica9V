@@ -4,11 +4,11 @@ DB_NAME: db_name
 DB_USER: db_user
 DB_PASS: db_pass
 
-WP_HOME: https://prac9dmpasir.ddns.net
-WP_SITEURL: https://prac9dmpasir.ddns.net/wordpress
+WP_HOME: https://practica9dmpverda.ddns.net
+WP_SITEURL: https://practica9dmpverda.ddns.net
 
-EMAIL: chema51226@gmail.com
-DOMAIN: prac9dmpasir.ddns.net
+EMAIL: pepico51226@gmail.com
+DOMAIN: practica9dmpverda.ddns.net
 
 
 php_paquetes:

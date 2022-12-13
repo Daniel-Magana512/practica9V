@@ -461,5 +461,264 @@ La tercera capa es el back-end , la máquina que está en este nivel nos dará l
 
 ### **ARCHIVOS DE CONFIGURACIÓN**
 
-Además de los archivos mencionados anteriormente
+Además de los archivos mencionados anteriormente que son el 000-default (va en las dos máquinas front-end).conf y el dir.conf (va en las dos máquinas front-end).
+
+Aparecen el 000-default.conf del balanceador y el archivo exports (va en la máquina nfs) que nos permitirá montar.
+
+
+**Archivo 000-default(balanceador).conf**
+
+Le he puesto el nombre del título mencionado para darle significado al archivo, cuando haga la clonación modificaré el nombre.
+
+En este archivo pondremos dos variables que serás las IPs de lás maquinas front-end, esto se configurará en el archivo variables.yml.
+
+
+```conf
+<VirtualHost *:80>
+
+    <Proxy balancer://mycluster>
+        # Server 1
+        BalancerMember http://IP_HTTP_SERVER_1
+
+        # Server 2
+        BalancerMember http://IP_HTTP_SERVER_2
+    </Proxy>
+
+    ProxyPass / balancer://mycluster/
+</VirtualHost>
+```
+
+**Archivo Exports**
+
+Este archivo debe de estar en el servidor nfs.
+
+Si quisiéramos compartir el directorio con todos los equipos de la subred 172.31.0.0/16 tendríamos que añadir la siguiente línea:
+
+```conf
+/var/www/html 172.31.0.0/16(rw,sync,no_root_squash,no_subtree_check)
+```
+
+**Balanceador preparativos**
+
+
+```yml
+---
+- name: Playbook para instalar la pila balanceador
+  hosts: balanceador
+  become: yes
+
+  tasks:
+
+  - name: Añadimos las variables
+    ansible.builtin.include_vars:
+      ./variables.yml
+
+  - name: Actualizar los repositorios
+    apt:
+      update_cache: yes
+
+  - name: Instalar el servidor web Apache
+    apt:
+      name: apache2
+      state: present
+#--------------------------------------------------------------
+  - name: Instalamos los modulos necesarrios 
+    apache2_module:
+        name: proxy
+        state: present
+
+  - name: Instalamos los modulos necesarrios 
+    apache2_module:
+        name: proxy_http
+        state: present
+
+  - name: Instalamos los modulos necesarrios 
+    apache2_module:
+        name: proxy_ajp
+        state: present
+
+  - name: Instalamos los modulos necesarrios 
+    apache2_module:
+        name: rewrite
+        state: present
+
+  - name: Instalamos los modulos necesarrios 
+    apache2_module:
+        name: deflate
+        state: present
+
+  - name: Instalamos los modulos necesarrios 
+    apache2_module:
+        name: headers
+        state: present
+
+  - name: Instalamos los modulos necesarrios 
+    apache2_module:
+        name: proxy_balancer
+        state: present
+
+  - name: Instalamos los modulos necesarrios 
+    apache2_module:
+        name: proxy_connect
+        state: present
+
+  - name: Instalamos los modulos necesarrios 
+    apache2_module:
+        name: proxy_html
+        state: present
+
+  - name: Instalamos los modulos necesarrios 
+    apache2_module:
+        name: lbmethod_byrequests
+        state: present
+
+#--------------------------------------------------------
+
+  - name: Eliminamos los archivos clonados innecesarios.
+    file:
+      path: /etc/apache2/sites-available/000-default.conf
+
+
+  - name: Clonamos el repositorio
+    git:
+      repo: https://github.com/Daniel-Magana512/practica9V.git
+      dest: /tmp/archivos
+
+  - name: Movemos los archivos de configuración a /etc/apache2/sites-availeble
+    copy:
+      src: /tmp/archivos/fase2/conf/000-default(balanceador).conf
+      dest: /etc/apache2/sites-available/000-default.conf
+      remote_src: yes
+
+  - name: Cambiamos el contenido del archivo 000-default.conf
+    ansible.builtin.replace:
+      path: /etc/apache2/sites-available/000-default.conf
+      regexp: IP_HTTP_SERVER_1
+      replace: "{{IP_HTTP_SERVER_1}}"
+
+  - name: Cambiamos el contenido del archivo 000-default.conf
+    ansible.builtin.replace:
+      path: /etc/apache2/sites-available/000-default.conf
+      regexp: IP_HTTP_SERVER_2
+      replace: "{{IP_HTTP_SERVER_2}}"
+
+  - name: Eliminamos los archivos clonados innecesarios.
+    file:
+      path: /tmp/archivos
+
+  - name: Reinicamos apache2
+    service: 
+      name: apache2
+      state: restarted
+```
+
+Instalamos apache y los módulos necesarios para que está máquina pueda tener ese rol de balanceador.
+
+Hacemos una clonación de este repositorio para pasarle el archivo 000-default(balanceador).conf, después lo renombraremos, lo movemos a /etc/apache/sites-available.
+
+Le pasamos las IPs de las dos máquinas de front-end.
+
+Reiniciamos.
+
+**Configuración del servidor nfs**
+
+```yml
+---
+- name: Playbook para instalar la pila nfs
+  hosts: nfs
+  become: yes
+
+  tasks:
+
+  - name: Actualizar los repositorios
+    apt:
+      update_cache: yes
+
+  - name: Instalación nfs server
+    apt:
+      name: nfs-kernel-server
+
+  - name: Creamos el directorio
+    ansible.builtin.file:
+      path: /var/www/html
+      state: directory
+      mode: 0755
+      owner: nobody
+      group: nogroup
+
+  - name: Clonamos el repositorio
+    git:
+      repo: https://github.com/Daniel-Magana512/practica9V.git
+      dest: /tmp/archivos
+
+  - name: Pasamos el archivo de conf a /etc/exports
+    copy:
+      src: /tmp/archivos/fase2/conf/exports
+      dest: /etc/exports
+      remote_src: yes
+      
+  - name: Eliminamos los archivos clonados innecesarios.
+    file:
+      path: /tmp/archivos
+
+  - name: Reiniciamos el servidor servidor nfs
+    service:
+      name: nfs-kernel-server
+      state: restarted 
+```
+Instalamos el servidor nfs-kernel-server.
+
+Creamos el directorio /var/www/html
+
+Clonamos el repositorio para pasar el archivo exports a la ruta /ect/
+
+Eliminamos la clonación previa, y reiniciamos el servidor.
+
+**Instalación de los clientes nfs**
+
+```yml
+---
+- name: Playbook para instalar  wordpress
+  hosts: front
+  become: yes
+
+  tasks: 
+
+  - name: Añadimos las variables
+    ansible.builtin.include_vars:
+      ./variables.yml
+
+  - name: Actualizar los repositorios
+    apt:
+      update_cache: yes
+
+  - name: Instalamos el cliente nfs
+    apt:
+      name: nfs-common
+      state: present
+
+  - name: Montamos el directorio compartido
+    ansible.posix.mount:
+      path: /var/www/html
+      src: "{{NFS_SERVER_IP_PRIVATE}}:/var/www/html"
+      state: mounted
+      fstype: nfs
+      opts: nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800
+```
+En este paso los clientes son los dos front-end, a los que hay que aplicarselo, para que puedan acceder al directorio que está compartiendo el servidor nfs.
+
+Instalamos el servidor cliente nfs.
+
+La variable NFS_SERVER_IP_PRIVATE es la ip privada de la máquina nfs, le estamos diciendo en la último línea, de la máquina que tenga la ip de la variable su directorio /var/www/html montamelo en la dirección donde especifíco en path. 
+
+**En el archivo de las variables**
+
+Hay un cambio, y tenemos que poner el dominio del balanceador.
+
+```yml
+WP_HOME: https://chemaalonsooo12.ddns.net
+WP_SITEURL: https://chemaalonsooo12.ddns.net/wordpress
+```
+
+## Comprobación
 

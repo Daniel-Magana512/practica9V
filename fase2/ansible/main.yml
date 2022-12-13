@@ -7,7 +7,3 @@
   - import_playbook: install_nfs_server.yml
   - import_playbook: install_nfs_client.yml
   - import_playbook: deploy_wordpress.yml
-
-
-
-
