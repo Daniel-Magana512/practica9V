@@ -1,6 +1,6 @@
 ---
 #Aquí ponemos la ip privada de back-end para hacerlo referenciar en el frontend
-DB_HOST_PRIVATE_IP: 172.31.79.23
+DB_HOST_PRIVATE_IP: 172.31.65.223
 DB_NAME: db_name
 DB_USER: db_user
 DB_PASS: db_pass
@@ -21,7 +21,7 @@ EMAIL: noeliacordoba20@gmail.com
 DOMAIN: pra9asirdmpre.ddns.net
 
 # Aquí ponemos la ip privada del servidor nfs
-NFS_SERVER_IP_PRIVATE: 172.31.69.145
+NFS_SERVER_IP_PRIVATE: 172.31.64.127
 
 # Aquí ponemos las Ip de los frontend
 IP_HTTP_SERVER_1: 3.235.223.56
