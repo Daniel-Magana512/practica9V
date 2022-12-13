@@ -720,5 +720,12 @@ WP_HOME: https://chemaalonsooo12.ddns.net
 WP_SITEURL: https://chemaalonsooo12.ddns.net/wordpress
 ```
 
-## Comprobación
+## **Comprobación**
 
+Aquí podemos apreciar que puedo acceder como administrador.
+
+![](./fotos/foto_3.PNG)
+
+Aquí podemos apreciar que podemos acceder por el lado del cliente.
+
+![](./fotos/foto_4.PNG)
