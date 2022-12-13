@@ -1,6 +1,6 @@
 ---
 #Aquí ponemos la ip privada de back-end para hacerlo referenciar en el frontend
-DB_HOST_PRIVATE_IP: 172.31.64.49
+DB_HOST_PRIVATE_IP: 172.31.73.203
 DB_NAME: db_name
 DB_USER: db_user
 DB_PASS: db_pass
@@ -13,18 +13,18 @@ php_paquetes:
 
 
 #Para añadir las rutas de las paginas , la primera es para el cliente y la otra es para el administrador
-WP_HOME: https://pra913iawacabar.ddns.net
-WP_SITEURL: https://pra913iawacabar.ddns.net/wordpress
+WP_HOME: https://chemaalonsooo12.ddns.net
+WP_SITEURL: https://chemaalonsooo12.ddns.net/wordpress
 
 # Para el cerbot
 EMAIL: noeliacordoba20@gmail.com
-DOMAIN: pra913iawacabar.ddns.net
+DOMAIN: chemaalonsooo12.ddns.net
 
 #Ip privada de nfs
-NFS_SERVER_IP_PRIVATE: 172.31.64.56
+NFS_SERVER_IP_PRIVATE: 172.31.76.78
 
 # Aquí ponemos las Ip de los frontend
-IP_HTTP_SERVER_1: 52.5.94.83
+IP_HTTP_SERVER_1: 35.173.224.81
 
-IP_HTTP_SERVER_2: 34.206.223.231
+IP_HTTP_SERVER_2: 44.200.193.241
 
