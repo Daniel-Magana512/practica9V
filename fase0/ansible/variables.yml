@@ -10,6 +10,7 @@ WP_SITEURL: https://prac9dmpasir.ddns.net/wordpress
 EMAIL: chema51226@gmail.com
 DOMAIN: prac9dmpasir.ddns.net
 
+
 php_paquetes:
   - php
   - libapache2-mod-php 
