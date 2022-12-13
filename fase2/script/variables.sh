@@ -19,5 +19,4 @@ IP_HTTP_SERVER_1 = 34.206.223.231
 
 IP_HTTP_SERVER_2 = 52.5.94.83
 
-#Para añadir la directiva de https hará referencia al balaneador
-_SERVER= pra913iawacabar.ddns.net
+
