@@ -20,7 +20,7 @@ WP_SITEURL: https://pra9asirdmpre.ddns.net/wordpress
 EMAIL: noeliacordoba20@gmail.com
 DOMAIN: pra9asirdmpre.ddns.net
 
-# Aquí ponemos la ip privada del servidor nfs
+
 NFS_SERVER_IP_PRIVATE: 172.31.64.127
 
 # Aquí ponemos las Ip de los frontend

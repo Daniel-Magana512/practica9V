@@ -13,8 +13,8 @@
     apt:
       name: nfs-kernel-server
 
- # - name: Creates directory
-#    shell: mkdir -p /var/www/html 
+  - name: Creates el directorio
+    shell: mkdir -p /var/www/html 
 
   - name: Modificacion del usuario propietario del directorio /vars/www/html/
     file: 
