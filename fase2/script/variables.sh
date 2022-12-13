@@ -14,11 +14,6 @@ WP_SITEURL=https://pra9asiriawdmp.ddns.net/wordpress
 EMAIL=chema51226@gmail.com
 DOMAIN=pra9asiriawdmp.ddns.net
 
-# Aquí ponemos la ip privada del servidor nfs
-NFS_SERVER_IP_PRIVATE= 172.31.64.127:/var/www/html /var/www/html
-
-NFS_SERVER_IP_PRIVATE_INSERTAR= 172.31.64.127:/var/www/html /var/www/html nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 
-
 # Aquí ponemos las Ip de los frontend
 IP_HTTP_SERVER_1 = 3.235.223.56
 
