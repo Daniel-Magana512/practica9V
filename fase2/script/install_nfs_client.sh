@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -x
-NFS_SERVER_IP_PRIVATE=172.31.64.127
+NFS_SERVER_IP_PRIVATE=172.31.64.56
 #Actualizamos los repositorios
 apt-update
 

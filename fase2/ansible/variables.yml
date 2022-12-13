@@ -13,12 +13,12 @@ php_paquetes:
 
 
 #Para añadir las rutas de las paginas , la primera es para el cliente y la otra es para el administrador
-WP_HOME: https://pra9asirdmpre.ddns.net
-WP_SITEURL: https://pra9asirdmpre.ddns.net/wordpress
+WP_HOME: https://pra913iawacabar.ddns.net
+WP_SITEURL: https://pra913iawacabar.ddns.net/wordpress
 
 # Para el cerbot
 EMAIL: noeliacordoba20@gmail.com
-DOMAIN: pra9asirdmpre.ddns.net
+DOMAIN: pra913iawacabar.ddns.net
 
 
 NFS_SERVER_IP_PRIVATE: 172.31.64.127
@@ -29,4 +29,4 @@ IP_HTTP_SERVER_1: 3.235.223.56
 IP_HTTP_SERVER_2: 44.197.235.29
 
 #Para añadir la directiva de https
-_SERVER: pra9asirdmpre.ddns.net
+_SERVER: pra913iawacabar.ddns.net
