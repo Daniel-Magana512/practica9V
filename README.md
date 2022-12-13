@@ -356,3 +356,35 @@ Para esta fase necesitaremos dos máquina , una para el front-end y otra para el
 * **La máquina de front-end tendra: Servidor apache y wordpress.**
 
 * **La máquina de back-end tendrá la base de datos.**
+
+El archivo de las variables no cambia, tampoco cambia la forma de obtener el certificado ni el archivo install_frontend.yml, además tiene los mismos archivos de configuración, por lo tanto no lo volveré a explicar.
+
+**Instalamos mysql-server y configuración**
+
+```yml
+---
+- name: Playbook para instalar la pila backend
+  hosts: bak
+  become: yes
+
+  tasks:
+  - name: Actualizar los repositorios
+    apt:
+      update_cache: yes
+
+  - name: Instalar el sistema gestor de base de datos de mysql
+    apt:
+      name: mysql-server
+      state: present
+      
+  - name: Cambiamos las variables de mysql para que me accepte conexiones desde cualquier interfaz
+    ansible.builtin.replace:
+      path: /etc/mysql/mysql.conf.d/mysqld.cnf
+      regexp: 127.0.0.1
+      replace: 0.0.0.0
+
+  - name: Reiniciamos el servidor mysql
+    service:
+      name: mysql
+      state: restarted 
+```
