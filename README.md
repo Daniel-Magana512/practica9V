@@ -21,6 +21,8 @@ En está practica vamos a instalar wordpress en diferentes niveles:
 *La tercera capa es el back-end , la máquina que está en este nivel nos dará la base de datos y con un usuario para wordpress.*
 
 
+**Importante la máquina back-end tiene que tener el puerto 3306 y el servidor nfs el puerto 2049**
+
 
 ![](./fotos/foto1.PNG)
 
@@ -359,7 +361,11 @@ Para esta fase necesitaremos dos máquina , una para el front-end y otra para el
 
 El archivo de las variables no cambia, tampoco cambia la forma de obtener el certificado ni el archivo install_frontend.yml, además tiene los mismos archivos de configuración, por lo tanto no lo volveré a explicar.
 
-**Instalamos mysql-server y configuración**
+El archivo de wordpress es el mismo que la fase0, a excepción de mysql configuración de base de datos , usuario y contraseña, esto se debe a que la esta funcionalidad ya no está concentrada en una sola sino que concretamente esa labor se encargará el back-end.
+
+**Instalamos mysql-server y configurar las conexiones**
+
+Esta parte la tendremos que ejecutar al back-end, ya que es la máquina que tendrá la basse de datos y l máquina del front-end se comunicará con el back-end para obtener la información de la base de datos.
 
 ```yml
 ---
@@ -388,3 +394,57 @@ El archivo de las variables no cambia, tampoco cambia la forma de obtener el cer
       name: mysql
       state: restarted 
 ```
+
+Actualizamos los repositorios.
+
+Instalamos mysql y dentro de la ruta  /etc/mysql/mysql.conf.d/mysqld.cnf
+el archivo final, le cambiamos el 127.0.0.1 le pondremos 0.0.0.0 para que así pueda conectarse con otrás maquinas, si esto lo dejamos por defecto solo podrá comunicarse consigo misma.
+
+Reiciniamos mysql.
+
+```yml
+---
+- name: Playbook para instalar la pila backend
+  hosts: bak
+  become: yes
+
+  tasks:
+
+    - name: Añadimos las variables
+      ansible.builtin.include_vars:
+        ./variables.yml
+
+    - name: Instalamos el gestor de paquetes de Python3
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Instalamos el modulo de pymysql
+      pip:
+        name: pymysql
+        state: present
+
+    - name: Crear una base de datos
+      mysql_db:
+        name: "{{ DB_NAME }}"
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Creamos un usuario para la Base de datos
+      no_log: true
+      mysql_user:
+        name: "{{ DB_USER }}"
+        host: '%'
+        password: "{{ DB_PASS }}"
+        priv: "{{ DB_NAME }}.*:ALL,GRANT"
+        state: present
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Reiniciamos el servidor mysql
+      service:
+        name: mysql
+        state: restarted 
+```
+
+Hacemos un llamamiento a las variables para crear la base de datos, usuario y contraseña, aunque previamente instalamos el gestor de paquetes python3-pip para instalar pymysql, esta herramienta nos permitirá interactuar con la base de datos.
+
