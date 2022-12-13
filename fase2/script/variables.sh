@@ -15,12 +15,14 @@ EMAIL=chema51226@gmail.com
 DOMAIN=pra9asiriawdmp.ddns.net
 
 # Aquí ponemos la ip privada del servidor nfs
-NFS_SERVER_IP_PRIVATE = 172.31.69.145
+NFS_SERVER_IP_PRIVATE= 172.31.64.127:/var/www/html /var/www/html
+
+NFS_SERVER_IP_PRIVATE_INSERTAR= 172.31.64.127:/var/www/html /var/www/html nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 
 
 # Aquí ponemos las Ip de los frontend
-http://IP_HTTP_SERVER_1 = 3.235.223.56
+IP_HTTP_SERVER_1 = 3.235.223.56
 
-http://IP_HTTP_SERVER_2 = 44.197.235.29
+IP_HTTP_SERVER_2 = 44.197.235.29
 
 #Para añadir la directiva de https
 _SERVER= pra9asiriawdmp.ddns.net
