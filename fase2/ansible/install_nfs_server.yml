@@ -1,0 +1,22 @@
+---
+- name: Playbook para instalar la pila frontend
+  hosts: front
+  become: yes
+
+  tasks:
+
+  - name: Actualizar los repositorios
+    apt:
+      update_cache: yes
+
+  - name: Instalación nfs server
+    apt:
+      install nfs-kernel-server
+
+  - name: Creamos el directorio /var/www/html/
+    file: 
+      path: /var/www/html/
+      state: directory
+      owner: nogroup
+      group: nogroup
+      recurse: yes

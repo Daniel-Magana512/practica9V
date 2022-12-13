@@ -1,0 +1,20 @@
+---
+- name: Playbook para instalar  wordpress
+  hosts: front
+  become: yes
+
+  tasks: 
+
+  - name: Añadimos las variables
+    ansible.builtin.include_vars:
+      ./variables.yml
+
+  - name: Actualizar los repositorios
+    apt:
+      update_cache: yes
+  
+  - name: Creamos el punto de montaje en el cliente NFS
+    shell: mount "{{NFS_SERVER_IP_PRIVATE}}":/var/www/html /var/www/html
+
+  - name: Editamos el archivo /etc/fstab para que al iniciar la máquina se monte automáticamente el directorio compartido por NFS.
+    shell: echo "{{$NFS_SERVER_IP_PRIVATE}}:/var/www/html /var/www/html  nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800 0 0" >> -a /etc/fstab
