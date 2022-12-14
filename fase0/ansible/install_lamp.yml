@@ -25,7 +25,7 @@
 
   - name: Instalar PHP 
     apt:
-      name: "{{php_paquetes}}"
+      name: "{{ php_paquetes }}"
       state: present
 
 #-------------------------------------------------------------------
