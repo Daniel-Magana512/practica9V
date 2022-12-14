@@ -90,13 +90,13 @@
     ansible.builtin.replace:
       path: /etc/apache2/sites-available/000-default.conf
       regexp: IP_HTTP_SERVER_1
-      replace: "{{IP_HTTP_SERVER_1}}"
+      replace: "{{ IP_HTTP_SERVER_1 }}"
 
   - name: Cambiamos el contenido del archivo 000-default.conf
     ansible.builtin.replace:
       path: /etc/apache2/sites-available/000-default.conf
       regexp: IP_HTTP_SERVER_2
-      replace: "{{IP_HTTP_SERVER_2}}"
+      replace: "{{ IP_HTTP_SERVER_2 }}"
 
   - name: Eliminamos los archivos clonados innecesarios.
     file:

@@ -47,13 +47,13 @@
     ansible.builtin.replace:
       path: /var/www/html/wordpress/wp-config.php
       regexp: password_here
-      replace: "{{DB_PASS}}"
+      replace: "{{ DB_PASS }}"
 
   - name: configuramos las variables en el archivo de configuración
     ansible.builtin.replace:
       path: /var/www/html/wordpress/wp-config.php
       regexp: localhost
-      replace: "{{DB_HOST_PRIVATE_IP}}"
+      replace: "{{ DB_HOST_PRIVATE_IP }}"
 
 
   - name: Copiamos el archivo index.php 

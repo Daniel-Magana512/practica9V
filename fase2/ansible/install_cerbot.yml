@@ -19,7 +19,7 @@
       state: present
 
   - name: Descarga el certificado 
-    ansible.builtin.command: certbot --apache -m {{EMAIL}}  --agree-tos --no-eff-email -d {{DOMAIN}}
+    ansible.builtin.command: certbot --apache -m {{ EMAIL }}  --agree-tos --no-eff-email -d {{ DOMAIN }}
     register: my_output
     changed_when: my_output.rc !=0
 
