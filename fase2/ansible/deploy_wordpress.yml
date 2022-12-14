@@ -35,13 +35,13 @@
     ansible.builtin.replace:
       path: /var/www/html/wordpress/wp-config.php
       regexp: database_name_here
-      replace: "{{DB_NAME}}"
+      replace: "{{ DB_NAME }}"
 
   - name: configuramos las variables en el archivo de configuración
     ansible.builtin.replace:
       path: /var/www/html/wordpress/wp-config.php
       regexp: username_here
-      replace: "{{DB_USER}}"
+      replace: "{{ DB_USER }}"
 
   - name: configuramos las variables en el archivo de configuración
     ansible.builtin.replace:
