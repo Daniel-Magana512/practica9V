@@ -1,7 +1,5 @@
 # **Práctica 9 INSTALACIÓN DE WORDPRESS EN DISTINTOS NIVELES**
 
-En está practica vamos a instalar wordpress en diferentes niveles:
-
 * **Fase 0** 
 
 *Instalaremos el wordprees con solamente un nodo.*

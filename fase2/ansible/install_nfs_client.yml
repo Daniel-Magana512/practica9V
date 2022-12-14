@@ -21,7 +21,7 @@
   - name: Montamos el directorio compartido
     ansible.posix.mount:
       path: /var/www/html
-      src: "{{NFS_SERVER_IP_PRIVATE}}:/var/www/html"
+      src: "{{ NFS_SERVER_IP_PRIVATE }}:/var/www/html"
       state: mounted
       fstype: nfs
-      opts: nfs auto,nofail,noatime,nolock,intr,tcp,actimeo=1800
+      opts: auto,nofail,noatime,nolock,intr,tcp,actimeo=1800
