@@ -15,8 +15,8 @@ EMAIL=chema51226@gmail.com
 DOMAIN=pra913iawacabar.ddns.net
 
 # Aquí ponemos las Ip de los frontend
-IP_HTTP_SERVER_1 = 34.206.223.231
+IP_HTTP_SERVER_1 =34.206.223.231
 
-IP_HTTP_SERVER_2 = 52.5.94.83
+IP_HTTP_SERVER_2 =52.5.94.83
 
 
