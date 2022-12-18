@@ -69,6 +69,13 @@
       block: |
         define('WP_HOME', '{{ WP_HOME }}');
         define('WP_SITEURL', '{{ WP_SITEURL }}');
+        $_SERVER['HTTPS'] = 'on';
+
+  - name: Borrar el marcado del blockinfile
+    ansible.builtin.lineinfile:
+      path: /var/www/html/wordpress/wp-config.php
+      regexp: ANSIBLE MANAGED BLOCK
+      state: absent
 
   - name: Modificación del archivo index.php
     ansible.builtin.replace:

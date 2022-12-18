@@ -29,6 +29,7 @@ sed -i "s/localhost/$DB_HOST_PRIVATE_IP/" /var/www/html/wordpress/wp-config.php
 # Añadimos las variables WP_HOME y la WP_SITEURL
 sed -i "/DB_COLLATE/a define('WP_HOME', '$WP_HOME');" /var/www/html/wordpress/wp-config.php
 sed -i "/WP_HOME/a define('WP_SITEURL', '$WP_SITEURL');" /var/www/html/wordpress/wp-config.php
+sed -i "/WP_SITEURL/a \$_SERVER['HTTPS'] = 'on';" /var/www/html/wordpress/wp-config.php
 
 
 # Copiamos el archivo index.php del directorio wordpress
