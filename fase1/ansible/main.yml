@@ -1,6 +1,6 @@
 ---
-  - import_playbook: install_frontend.yml
-  - import_playbook: install_backend.yml
-  - import_playbook: deploy_backend.yml
-  - import_playbook: install_cerbot.yml
-  - import_playbook: deploy_wordpress.yml
+  - import_playbook: playbooks/install_frontend.yml
+  - import_playbook: playbooks/install_backend.yml
+  - import_playbook: playbooks/deploy_backend.yml
+  - import_playbook: playbooks/install_cerbot.yml
+  - import_playbook: playbooks/deploy_wordpress.yml
