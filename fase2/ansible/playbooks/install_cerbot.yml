@@ -10,7 +10,7 @@
 
   - name: Añadimos las variables
     ansible.builtin.include_vars:
-      ./variables.yml
+      ../vars/variables.yml
 
   - name: Instalación de cerbot mediante snap
     community.general.snap:

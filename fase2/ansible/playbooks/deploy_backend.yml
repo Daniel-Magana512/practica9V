@@ -7,7 +7,7 @@
 
     - name: Añadimos las variables
       ansible.builtin.include_vars:
-        ./variables.yml
+        ../vars/variables.yml
 
     - name: Instalamos el gestor de paquetes de Python3
       apt:
