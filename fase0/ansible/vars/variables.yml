@@ -4,11 +4,11 @@ DB_NAME: db_name
 DB_USER: db_user
 DB_PASS: db_pass
 
-WP_HOME: https://fase0dmpasir.ddns.net
-WP_SITEURL: https://fase0dmpasir.ddns.net/wordpress
+WP_HOME: https://wordpressdmpasir.ddns.net
+WP_SITEURL: https://wordpressdmpasir.ddns.net/wordpress
 
 EMAIL: chema51226@gmail.com
-DOMAIN: fase0dmpasir.ddns.net
+DOMAIN: wordpressdmpasir.ddns.net
 
 
 php_paquetes:

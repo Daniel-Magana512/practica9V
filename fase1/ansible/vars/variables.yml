@@ -1,5 +1,5 @@
 ---
-DB_HOST_PRIVATE_IP: 172.31.65.122
+DB_HOST_PRIVATE_IP: 172.31.79.42
 DB_NAME: db_name
 DB_USER: db_user
 DB_PASS: db_pass
@@ -9,8 +9,8 @@ php_paquetes:
   - libapache2-mod-php 
   - php-mysql
 
-WP_HOME: https://fase1dmpasi27.ddns.net
-WP_SITEURL: https://fase1dmpasi27.ddns.net/wordpress
+WP_HOME: https://practica9danielasir.ddns.net
+WP_SITEURL: https://practica9danielasir.ddns.net/wordpress
 
 EMAIL: chema51226@gmail.com
-DOMAIN: fase1dmpasi27.ddns.net
+DOMAIN: practica9danielasir.ddns.net

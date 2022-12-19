@@ -53,7 +53,7 @@
     ansible.builtin.replace:
       path: /var/www/html/wordpress/wp-config.php
       regexp: localhost
-      replace: "{{DB_HOST_PRIVATE_IP}}"
+      replace: "{{ DB_HOST_PRIVATE_IP }}"
 
 
   - name: Copiamos el archivo index.php del directorio wordpress
