@@ -22,6 +22,7 @@
     ansible.builtin.command: certbot --apache -m {{ EMAIL }}  --agree-tos --no-eff-email -d {{ DOMAIN }}
     register: my_output
     changed_when: my_output.rc !=0
+    when: cerbot is defined
 
   - name: Reinicamos apache2
     service: 

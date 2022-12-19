@@ -1,6 +1,6 @@
 ---
 #Aquí ponemos la ip privada de back-end para hacerlo referenciar en el frontend
-DB_HOST_PRIVATE_IP: 172.31.73.75
+DB_HOST_PRIVATE_IP: 172.31.71.225
 DB_NAME: db_name
 DB_USER: db_user
 DB_PASS: db_pass
@@ -13,18 +13,18 @@ php_paquetes:
 
 
 #Para añadir las rutas de las paginas , la primera es para el cliente y la otra es para el administrador
-WP_HOME: https://dmp9practicaasir.ddns.net
-WP_SITEURL: https://dmp9practicaasir.ddns.net/wordpress
+WP_HOME: https://fase2danieliaw.ddns.net
+WP_SITEURL: https://fase2danieliaw.ddns.net/wordpress
 
 # Para el cerbot
 EMAIL: noeliacordoba20@gmail.com
-DOMAIN: dmp9practicaasir.ddns.net
+DOMAIN: fase2danieliaw.ddns.net
 
 #Ip privada de nfs
-NFS_SERVER_IP_PRIVATE: 172.31.69.73
+NFS_SERVER_IP_PRIVATE: 172.31.75.36
 
 # Aquí ponemos las Ip de los frontend
-IP_HTTP_SERVER_1: 3.227.235.212
+IP_HTTP_SERVER_1: 172.31.68.146
 
-IP_HTTP_SERVER_2: 3.237.46.163
+IP_HTTP_SERVER_2: 172.31.71.130
 
