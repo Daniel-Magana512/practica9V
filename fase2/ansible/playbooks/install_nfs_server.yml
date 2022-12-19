@@ -21,17 +21,11 @@
       owner: nobody
       group: nogroup
 
-  - name: Clonamos el repositorio
-    git:
-      repo: https://github.com/Daniel-Magana512/practica9V.git
-      dest: /tmp/archivos
-
   - name: Pasamos el archivo de conf a /etc/exports
     copy:
-      src: /tmp/archivos/fase2/conf/exports
+      src: /home/ubuntu/practica9V/fase2/conf/exports
       dest: /etc/exports
-      remote_src: yes
-      
+
   - name: Eliminamos los archivos clonados innecesarios.
     file:
       path: /tmp/archivos
