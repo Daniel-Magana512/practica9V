@@ -1,9 +1,9 @@
 ---
-#  - import_playbook: playbooks/install_frontend.yml
-#  - import_playbook: playbooks/install_backend.yml
-#  - import_playbook: playbooks/deploy_backend.yml
-#  - import_playbook: playbooks/install_load_balancer.yml
+  - import_playbook: playbooks/install_frontend.yml
+  - import_playbook: playbooks/install_backend.yml
+  - import_playbook: playbooks/deploy_backend.yml
+  - import_playbook: playbooks/install_load_balancer.yml
   - import_playbook: playbooks/install_cerbot.yml
-#  - import_playbook: playbooks/install_nfs_server.yml
-#  - import_playbook: playbooks/install_nfs_client.yml
-#  - import_playbook: playbooks/deploy_wordpress.yml
+  - import_playbook: playbooks/install_nfs_server.yml
+  - import_playbook: playbooks/install_nfs_client.yml
+  - import_playbook: playbooks/deploy_wordpress.yml

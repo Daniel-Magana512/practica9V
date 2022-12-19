@@ -26,10 +26,6 @@
       src: /home/ubuntu/practica9V/fase2/conf/exports
       dest: /etc/exports
 
-  - name: Eliminamos los archivos clonados innecesarios.
-    file:
-      path: /tmp/archivos
-
   - name: Reiniciamos el servidor servidor nfs
     service:
       name: nfs-kernel-server
